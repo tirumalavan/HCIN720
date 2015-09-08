@@ -1,0 +1,54 @@
+#fig1, #fig2{
+	display: block;
+}
+
+#chart1, #legend1{
+	display: inline-block;
+}
+
+#legend1{
+	overflow: auto;
+	text-align: left;
+	left:25%;
+	width:500px;
+	text-align: justify;
+	position: absolute;
+}
+
+#myDiv, #text2 {
+	display: inline;
+}
+
+#text1, #secondPane, #link1{
+	display: table-cell;
+}
+#text1{
+	vertical-align: middle;
+	text-align: right;
+	overflow: auto;
+}
+
+#myDiv{
+	height: 500px;
+	width:500px;
+}
+
+#text2{
+	vertical-align: top;
+	position: relative;
+	left: 25%;
+	width:150px;
+	overflow: auto;
+}
+
+#chart1{
+	overflow: auto;
+	text-align: left;
+	left:10%;
+	width: 50%;
+}
+#link1{
+	vertical-align: middle;
+	text-align: justify;
+	overflow: auto;
+}
