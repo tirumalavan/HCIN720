@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Testing for loop for restricting the number of fetches</title>
+  <meta charset="utf-8">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <!-- jQuery -->
+    <!-- Plotly.js -->
+    <script src="https://d14fo0winaifog.cloudfront.net/plotly-basic.js"></script>
+    <script type="text/javascript" src="jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="jquery.jqplot.js"></script>
+    <script type="text/javascript" src="plugins/jqplot.meterGaugeRenderer.js"></script>
+    <link rel="stylesheet" type="text/css" href="jquery.jqplot.css" />
+</head>
+<link rel="stylesheet" type="text/css" href="styles.css"> 
+<script type="text/javascript">
+var condition=[];
+var strCondition=[];
+var timestamp=[];
+var counts=[];
+var customConditionCode={"CLEAR": 1, "CLOUDY": 2, "MIST": 4, "HAZE": 3};
+var check;
+var trace1;
+var s1;
+$(document).ready(function(){
+  $("#text1").html("<p>Moisture Levels</p>");
+  $("#text2").html("<p>Timestamp</p>");
+  $.getJSON( "https://data.sparkfun.com/output/n11lQDrpQGuA4MZjqM7J.json", {contentType: "application/json; charset=utf-8"}, function(data){
+      $.each(data, function( index, value ) {
+        var timeObj = value.date;
+        counts.push(JSON.stringify(index));
+        var condObj = customConditionCode[value.condition];
+        strCondition.push(JSON.stringify(value.condition));
+        condition.push(JSON.stringify(condObj));
+        timestamp.push(JSON.stringify(timeObj));
+        if (index === 6) {
+        return false;
+        }
+      });
+      console.log("Custom array created");
+      s1=[condition[0]];
+      plotGraph();
+    });
+  console.log(condition);
+  console.log(timestamp);
+  console.log(counts);
+  trace1 = {
+          x: timestamp,
+          y: condition,
+          type: 'bar',
+          text:strCondition,
+          marker: {
+              color: 'rgb(158,202,225)',
+              opacity: 0.6,
+              line: {
+                    color: 'rbg(8,48,107)',
+                    width: 1.5
+                  }
+                  }
+        };
+    var data1=[trace1];
+  var layout = {
+    title: 'Last 2 hour humidity statistic for New Jersey'
+  };
+  Plotly.newPlot('myDiv', data1, layout);
+  function plotGraph(){
+   console.log("s1 value is"+s1);
+   plot1 = $.jqplot('chart1',[s1],{
+       seriesDefaults: {
+           renderer: $.jqplot.MeterGaugeRenderer,
+           rendererOptions: {
+               min: 0,
+               max: 4,
+               label:"Current Moisture Level",
+               labelPosition:'bottom',
+               intervals:[1,2,3,4],
+               intervalColors:['#FFFF00', '#CCFFFF', '#ADADAD', '#3399FF']
+              }
+        }
+    });
+  }
+});
+setInterval('window.location.reload()', 600000);
+</script>
+<body>
+  <div id="fig1">
+    <div id="chart1"></div>
+    <div id="legend1"><p>1:CLEAR   ||  2:CLOUDY     ||    3:HAZE    ||    4:MIST</p></div> 
+  </div>
+  <div id="fig2">
+    <div id="text1"></div>
+    <div id="secondPane">
+      <div id="myDiv"></div>
+      <div id="text2"></div>
+    </div>
+    <div id="link1"><a href="https://data.sparkfun.com/streams/n11lQDrpQGuA4MZjqM7J" target="_blank">Data Source</a></div>
+  </div>
+</body>
+</html>
